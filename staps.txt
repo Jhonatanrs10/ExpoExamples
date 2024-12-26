@@ -1,0 +1,15 @@
+#create a default project latest version
+npx create-expo-app@latest
+
+#start the project
+npx expo start
+
+#extension to help with creation of components
+ES7+ React/Redux/React-Native
+by dsznajder
+
+#for beginners like me tutorial React Native
+https://www.youtube.com/playlist?list=PL0Zuz27SZ-6OH3xackTS2KLcnmxx5wW7c
+
+#formatar o codigo no linux 
+Ctrl + Shift + i
