@@ -10,11 +10,9 @@ const RenderItemAnime = ({ item, colorScheme }) => (
     <View style={styles.cont1}>
       <Text style={styles.text}>{item.name}</Text>
       <View style={styles.cont2}>
-        <Text style={styles.text2}>{item.release}</Text>
-        <Text style={styles.text2}> (S{(item.seasons.slice().reverse().findIndex(season => season > 0) !== -1 ? item.seasons.length - 1 - item.seasons.slice().reverse().findIndex(season => season > 0) : -1)+1}</Text>
+        <Text style={styles.text2}>(S{(item.seasons.slice().reverse().findIndex(season => season > 0) !== -1 ? item.seasons.length - 1 - item.seasons.slice().reverse().findIndex(season => season > 0) : -1)+1}</Text>
         <Text style={styles.text2}>E{item.seasons.slice().reverse().find(season => season > 0)} / </Text>
         <Text style={styles.text2}>E{item.seasons.reduce((acc, episodes) => acc + episodes)}) </Text>
-        <Text style={styles.text2}>{item.status}</Text>
       </View>
     </View>
     <View style={styles.cont3}>
@@ -47,6 +45,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     //backgroundColor: 'blue',
     padding: 3,
+    paddingStart: 0
   },
   cont3: {
     flex: 1,
