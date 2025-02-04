@@ -2,18 +2,17 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform } from 'react-native';
 import { HapticTab } from '@/components/HapticTab';
-import { AntDesign , FontAwesome} from '@expo/vector-icons';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import useThemeColor from '../components/ThemeColor';
 
 export default function TabsLayout() {
-  const colorScheme = useColorScheme();
+  const {color} = useThemeColor();
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: color.color,
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
@@ -23,10 +22,20 @@ export default function TabsLayout() {
             position: 'absolute',
             paddingBottom: 2, // Adicionando padding abaixo das abas
             paddingTop: 2, // Adicionando padding acima das abas
+            borderTopWidth: 0,
+            backgroundColor: color.backgroundColor,
+            shadowColor: 'transparent', // Remove a sombra no iOS
+            shadowOffset: { width: 0, height: 0 }, // Remove a sombra no iOS
+            shadowOpacity: 0,         // Remove a sombra no iOS
+            shadowRadius: 0,          // Remove a sombra no iOS
           },
           default: {
             paddingBottom: 2, // Adicionando padding abaixo das abas
             paddingTop: 2, // Adicionando padding acima das abas
+            borderTopWidth: 0,
+            backgroundColor: color.backgroundColor,
+            elevation: 0,             // Remove a sombra no Android
+            borderRadius: 0
           },
         }),
       }}>
@@ -40,7 +49,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="crud"
         options={{
-          headerShown: true,
+          headerShown: false,
           headerTitle: 'Add',
           headerTitleAlign: 'center',
           title: '',

@@ -1,22 +1,23 @@
 import React from 'react'
-import { Text, StyleSheet, View, ToastAndroid, Linking } from 'react-native';
-import PlayButton from './playButton';
-
+import { Text, StyleSheet, View, ToastAndroid, Linking, TouchableOpacity } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 // Componente de Botão Personalizado
 
-const RenderItemAnime = ({ item, colorScheme }) => (
+const RenderItemAnime = ({ item, colorbg, colortext, coloricon }) => (
   
-  <View style={[styles.item]}>
+  <View style={[styles.item, { backgroundColor: colorbg}]}>
     <View style={styles.cont1}>
-      <Text style={styles.text}>{item.name}</Text>
+      <Text style={[styles.text, { color: colortext}]}>{item.name}</Text>
       <View style={styles.cont2}>
-        <Text style={styles.text2}>(S{(item.seasons.slice().reverse().findIndex(season => season > 0) !== -1 ? item.seasons.length - 1 - item.seasons.slice().reverse().findIndex(season => season > 0) : -1)+1}</Text>
-        <Text style={styles.text2}>E{item.seasons.slice().reverse().find(season => season > 0)} / </Text>
-        <Text style={styles.text2}>E{item.seasons.reduce((acc, episodes) => acc + episodes)}) </Text>
+        <Text style={[styles.text2, { color: colortext}]}>(S{(item.seasons.slice().reverse().findIndex(season => season > 0) !== -1 ? item.seasons.length - 1 - item.seasons.slice().reverse().findIndex(season => season > 0) : -1)+1}</Text>
+        <Text style={[styles.text2, { color: colortext}]}>E{item.seasons.slice().reverse().find(season => season > 0)} / </Text>
+        <Text style={[styles.text2, { color: colortext}]}>E{item.seasons.reduce((acc, episodes) => acc + episodes)}) </Text>
       </View>
     </View>
     <View style={styles.cont3}>
-      <PlayButton onPress={() => { if (item.link.indexOf("https://") != -1 == true || item.link.indexOf("http://") != -1 == true) { Linking.openURL(item.link) } else { ToastAndroid.show('No link (https://) is a requirement', ToastAndroid.SHORT); } }} onLongPress={() => { Linking.openURL('https://myanimelist.net/search/all?q=' + item?.name) }} />
+      <TouchableOpacity style={styles.button} activeOpacity={0.3} onPress={() => { if (item.link.indexOf("https://") != -1 == true || item.link.indexOf("http://") != -1 == true) { Linking.openURL(item.link) } else { ToastAndroid.show('No link (https://) is a requirement', ToastAndroid.SHORT); } }} onLongPress={() => { Linking.openURL('https://myanimelist.net/search/all?q=' + item?.name) }}>
+            <AntDesign style={[{color: coloricon, borderColor: 'black', border: 4}]} size={36} name="play" />
+        </TouchableOpacity>
     </View>
   </View>
 );
@@ -60,6 +61,13 @@ const styles = StyleSheet.create({
   text2: {
     fontSize: 13,
   },
+  button: {
+    borderRadius: 6,
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+},
 });
 
 export default RenderItemAnime;

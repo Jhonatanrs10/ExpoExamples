@@ -1,17 +1,14 @@
 import { View, Text, StyleSheet, FlatList } from 'react-native'
 import React, { useState } from 'react';
-import gStyles from '@/app/style'
 import RenderItemAnime from '../components/RenderItemAnime'
-import { useColorScheme } from '@/hooks/useColorScheme';
 import myData from '../components/data';
-import SearchBar from '../components/SearchBar';
-import Botao1 from '../components/Botao1';
 import WeekButtons from '../components/WeekButtons';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
+import useThemeColor from '../components/ThemeColor';
 
 export default function home() {
 
-  const colorScheme = useColorScheme();
+  const {color} = useThemeColor();
 
   //const data = myData
 
@@ -20,7 +17,7 @@ export default function home() {
 
   // Estado para o termo de pesquisa
   const [filteredData, setFilteredData] = useState(data);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [filterOption, setFilterOption] = useState('all'); // Estado para a opção de filtro (all, completed, watching)
 
   const filterWatchingAll = () => {
@@ -28,8 +25,6 @@ export default function home() {
 
     if (filterOption === 'all') {
       filteredData = myData; // Mostra todos os dados
-    } else if (filterOption === 'completed') {
-      filteredData = myData.filter(item => item.status.toLowerCase() === 'completed'); // Filtra por completed
     } else if (filterOption === 'watching') {
       filteredData = myData.filter(item => item.status.toLowerCase() === 'watching'); // Filtra por watching
     }
@@ -37,11 +32,9 @@ export default function home() {
     setFilteredData(filteredData);  // Atualiza os dados filtrados
   };
 
-  const changeFilterOption = () => {
+  const changeFilterOption = (value) => {
     // Altera a opção de filtro a cada clique
     if (filterOption === 'all') {
-      setFilterOption('completed');
-    } else if (filterOption === 'completed') {
       setFilterOption('watching');
     } else {
       setFilterOption('all');
@@ -78,12 +71,22 @@ export default function home() {
 
 
   const renderItem = ({ item }) => (
-    <RenderItemAnime item={item} colorScheme={colorScheme} />
+    <RenderItemAnime item={item} colorbg={color.render} colortext={color.color} coloricon={color.button} />
   );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.container3}>
+    <SafeAreaView style={[styles.container, { backgroundColor: color.backgroundColor}]}>
+      
+      <View style={[styles.container2, { backgroundColor: color.backgroundColor}]}>
+        <FlatList
+          data={filteredDataBySearch}  // Dados a serem renderizados
+          renderItem={renderItem}  // Função para renderizar cada item
+          keyExtractor={(item) => item.id}  // Função para extrair a chave única de cada item
+          showsVerticalScrollIndicator={false} // Ocultar a barra de rolagem vertical
+          showsHorizontalScrollIndicator={false} // Ocultar a barra de rolagem horizontal
+        />
+      </View>
+      <View style={[styles.container3, { backgroundColor: color.backgroundColor}]}>
         <WeekButtons
         onPress0={() => { changeFilterOption(); filterWatchingAll(); setSearchQuery('')}}
         onPress1={() => filterByDay('sunday')}
@@ -96,43 +99,28 @@ export default function home() {
         value={searchQuery}
         onChangeText={setSearchQuery} // Atualiza o termo de pesquisa
         placeholder="Search"
-        />
-       {/* 
-       <SearchBar
-          value={searchQuery}
-          onChangeText={setSearchQuery} // Atualiza o termo de pesquisa
-          onPress={clearInput}
-          placeholder="Search"
-          colorScheme={colorScheme}
-          styleTextInput={[gStyles.inputSearchBar, { backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff', color: colorScheme === 'dark' ? '#fff' : '#121212' }]}
-          styleContainer={gStyles.containerSearchBar}
-        />
-        */}
-      </View>
-      <View style={styles.container2}>
-        <FlatList
-          data={filteredDataBySearch}  // Dados a serem renderizados
-          renderItem={renderItem}  // Função para renderizar cada item
-          keyExtractor={(item) => item.id}  // Função para extrair a chave única de cada item
-          showsVerticalScrollIndicator={false} // Ocultar a barra de rolagem vertical
-          showsHorizontalScrollIndicator={false} // Ocultar a barra de rolagem horizontal
+        style={[{backgroundColor: color.button}]}
+        textStyle={[{color: color.white}]}
         />
       </View>
-      
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50
+    paddingTop: 10,
+    backgroundColor: 'yellow',
   },
   container2: {
-    flex: 9,
+    flex: 1,
+    backgroundColor: 'green',
   },
   container3: {
-    flex: 1,
+    flex: 0,
+    backgroundColor: 'red',
+    height: 50
   },
   item: {
     backgroundColor: 'rgb(222,222,222)',
